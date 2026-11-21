@@ -1,15 +1,15 @@
 import type { ToolConfig, ToolTheme } from '@itsjust/core';
 
 const toolTheme: ToolTheme = {
-  brand: 'Base Converter',
+  brand: 'Text Repeater & Multiplier',
   accent: '#10b981',
 };
 
 export const toolConfig: ToolConfig = {
-  id: '1795194271',
-  name: 'Base Converter',
+  id: 'text-repeater',
+  name: 'Text Repeater & Multiplier',
   description:
-    'Convert numbers between binary, octal, decimal, hexadecimal and arbitrary bases 2-36 with live input and bit grouping.',
+    'Repeat any text N times with configurable separators, numbering, wrapping and line grouping, plus copy and download.',
   version: '1.0.0',
   exportFormats: ['png', 'jpeg', 'webp', 'pdf'],
   features: {

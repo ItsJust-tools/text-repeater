@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 import { generateJsonLd, generateToolMetadata } from '@/lib/seo';
 import toolConfig from '@/tool/tool.config';
 import { getPublicSiteUrl, templateMetadata } from '@/tool/template-metadata';
-import { baseConverterTool } from '@/tool/tool-definition';
+import { textRepeaterTool } from '@/tool/tool-definition';
 import { ToolCanvas } from '@/tool/components/tool-canvas';
 import { ToolSidebar } from '@/tool/components/tool-sidebar';
 import { ToolToolbar } from '@/tool/components/tool-toolbar';
@@ -93,27 +93,32 @@ describe('app and seo', () => {
   it('covers tool definition and helper exports', async () => {
     expect(cn('a', undefined, 'b', false, null, 'c')).toBe('a b c');
     expect(getPublicSiteUrl()).toBe('http://localhost:3000');
-    expect(baseConverterTool.deserialize({ input: 'ff', inputBase: 16 })).toEqual({
+    expect(textRepeaterTool.deserialize({ text: 'x', count: 3 })).toEqual({
       success: true,
       data: {
-        input: 'ff',
-        inputBase: 16,
-        digitCase: 'lower',
-        grouping: 'none',
-        showTwosComplement: true,
-        bitLength: DEFAULT_STATE.bitLength,
+        text: 'x',
+        count: 3,
+        separatorMode: 'newline',
+        customSeparator: '',
+        numbering: 'none',
+        numberStart: 1,
+        numberPad: 1,
+        groupSize: 0,
+        prefix: '',
+        suffix: '',
+        caseMode: 'asis',
       },
     });
-    expect(baseConverterTool.deserialize({ nope: true })).toEqual({
+    expect(textRepeaterTool.deserialize({ nope: true })).toEqual({
       success: false,
-      error: 'Invalid data format: expected { input: string, inputBase: number (2-36), ... }',
+      error: 'Invalid data format: expected { text: string, count: number (0-10000), ... }',
     });
-    expect(baseConverterTool.serialize({ ...DEFAULT_STATE, input: '11' })).toContain('"input":"11"');
-    expect(baseConverterTool.deserialize({ input: '11', inputBase: 10, digitCase: 'upper', grouping: 'byte', bitLength: 8 })).toEqual({
+    expect(textRepeaterTool.serialize({ ...DEFAULT_STATE, text: 'xy' })).toContain('"text":"xy"');
+    expect(textRepeaterTool.deserialize({ text: 'xy', count: 2, caseMode: 'upper', numbering: '1.', groupSize: 2 })).toEqual({
       success: true,
-      data: { input: '11', inputBase: 10, digitCase: 'upper', grouping: 'byte', showTwosComplement: true, bitLength: 8 },
+      data: { text: 'xy', count: 2, separatorMode: 'newline', customSeparator: '', numbering: '1.', numberStart: 1, numberPad: 1, groupSize: 2, prefix: '', suffix: '', caseMode: 'upper' },
     });
-    const exporters = (baseConverterTool as { exporters?: Array<{ loader: ExporterLoader }> }).exporters ?? [];
+    const exporters = (textRepeaterTool as { exporters?: Array<{ loader: ExporterLoader }> }).exporters ?? [];
     expect(exporters).toHaveLength(4);
     const first = exporters[0];
     expect(first).toBeDefined();
@@ -128,13 +133,13 @@ describe('app and seo', () => {
       <>
         <ToolToolbar />
         <ToolSidebar text="ff" fontSize={16} onFontSizeChange={() => {}} />
-        <ToolCanvas state={{ ...DEFAULT_STATE, input: '255' }} fontSize={16} />
+        <ToolCanvas state={{ ...DEFAULT_STATE, text: 'hi' }} fontSize={16} />
       </>
     );
 
     expect(screen.getByRole('link', { name: 'Open help page' })).toBeInTheDocument();
-    expect(screen.getByText('2')).toBeInTheDocument(); // digit count for "ff"
-    expect(screen.getByRole('application', { name: 'Base converter canvas' })).toBeInTheDocument();
-    expect(screen.getByTestId('base-row-16')).toHaveTextContent('ff');
+    expect(screen.getByText('2')).toBeInTheDocument(); // character count for "hi"
+    expect(screen.getByRole('application', { name: 'Text repeater canvas' })).toBeInTheDocument();
+    expect(screen.getByTestId('repeat-preview')).toHaveTextContent('hi');
   });
 });

@@ -1,6 +1,6 @@
 'use client';
 
-import { MAX_BASE, MIN_BASE } from '../types';
+import { MAX_COUNT } from '../types';
 
 interface ToolSidebarProps {
   text?: string;
@@ -9,16 +9,16 @@ interface ToolSidebarProps {
 }
 
 export function ToolSidebar({ text, fontSize, onFontSizeChange }: ToolSidebarProps) {
-  const digits = (text ?? '').replace(/\s/g, '').length;
+  const chars = (text ?? '').length;
 
   return (
-    <div className="converter-sidebar">
+    <div className="converter-sidebar" data-testid="text-repeater-sidebar">
       <div className="sidebar-section">
         <h3>Input Stats</h3>
         <dl className="stats-list">
           <div className="stat-row">
-            <dt>Digits</dt>
-            <dd>{digits.toLocaleString()}</dd>
+            <dt>Characters</dt>
+            <dd>{chars.toLocaleString()}</dd>
           </div>
           <div className="stat-row">
             <dt>Font size</dt>
@@ -43,18 +43,16 @@ export function ToolSidebar({ text, fontSize, onFontSizeChange }: ToolSidebarPro
             </dd>
           </div>
           <div className="stat-row">
-            <dt>Supported bases</dt>
-            <dd>
-              {MIN_BASE}–{MAX_BASE}
-            </dd>
+            <dt>Max repetitions</dt>
+            <dd>{MAX_COUNT.toLocaleString()}</dd>
           </div>
         </dl>
       </div>
       <div className="sidebar-section">
-        <h3>Digit reference</h3>
+        <h3>How it works</h3>
         <p className="text-xs leading-relaxed">
-          Digits above 9 map to letters: a=10, b=11, … z=35. Inputs may include an optional
-          leading sign and a single fractional part.
+          Each repetition can be numbered, wrapped with a prefix/suffix, joined by a
+          separator, and grouped N per line. Output case can be forced to upper or lower.
         </p>
       </div>
     </div>

@@ -1,39 +1,60 @@
-export type DigitCase = 'lower' | 'upper';
+export type SeparatorMode = 'newline' | 'space' | 'comma' | 'none' | 'custom';
 
-export type BitGrouping = 'none' | 'nibble' | 'byte';
+export type NumberingStyle = 'none' | '1.' | '01-' | '[1]';
+
+export type CaseMode = 'asis' | 'upper' | 'lower';
 
 export interface ToolState {
-  /** The number as typed by the user, interpreted in `inputBase`. */
-  input: string;
-  /** Base used to interpret `input` (2-36). */
-  inputBase: number;
-  /** Which case to use for digit letters in outputs. */
-  digitCase: DigitCase;
-  /** Grouping applied to binary output. */
-  grouping: BitGrouping;
-  /** Whether to show the signed two's complement representation. */
-  showTwosComplement: boolean;
-  /** Assumed bit length used for two's complement (multiple of 4). */
-  bitLength: number;
+  /** The text to repeat. */
+  text: string;
+  /** How many times to repeat. */
+  count: number;
+  /** Separator placed between repetitions. */
+  separatorMode: SeparatorMode;
+  /** Custom separator used when separatorMode is 'custom'. */
+  customSeparator: string;
+  /** Numbering style applied per repetition. */
+  numbering: NumberingStyle;
+  /** First repetition number. */
+  numberStart: number;
+  /** Zero-pad numbers to this width (minimum 1). */
+  numberPad: number;
+  /** Repetitions per output line/block (0 = keep separators only). */
+  groupSize: number;
+  /** Prefix wrapped around each repetition. */
+  prefix: string;
+  /** Suffix wrapped around each repetition. */
+  suffix: string;
+  /** Case applied to the final output. */
+  caseMode: CaseMode;
 }
 
-export const MIN_BASE = 2;
-export const MAX_BASE = 36;
+export const MIN_COUNT = 0;
+export const MAX_COUNT = 10000;
 
 export const DEFAULT_STATE: ToolState = {
-  input: '255',
-  inputBase: 10,
-  digitCase: 'lower',
-  grouping: 'nibble',
-  showTwosComplement: true,
-  bitLength: 32,
+  text: 'Hello!',
+  count: 3,
+  separatorMode: 'newline',
+  customSeparator: '',
+  numbering: 'none',
+  numberStart: 1,
+  numberPad: 1,
+  groupSize: 0,
+  prefix: '',
+  suffix: '',
+  caseMode: 'asis',
 };
 
-export interface BaseConversion {
-  /** Canonical lowercase conversion (no grouping separators). */
-  value: string;
-  /** Formatted value: case applied plus bit grouping for binary. */
-  formatted: string;
-  /** True when an error is reported for this base row. */
+export interface RepeatResult {
+  /** The generated output (case applied). */
+  output: string;
+  /** Error message when state is invalid, otherwise null. */
   error: string | null;
+  /** Number of repetitions actually generated (0 on error). */
+  repetitions: number;
+  /** Character count of the output. */
+  charCount: number;
+  /** Line count of the output. */
+  lineCount: number;
 }

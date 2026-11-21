@@ -38,7 +38,7 @@ vi.mock('@itsjust/core', () => ({
   ),
   useTool: () => ({
     state: {
-      data: { input: 'Hello', inputBase: 10, digitCase: 'lower', grouping: 'none', showTwosComplement: true, bitLength: 32 },
+      data: { text: 'Hello', count: 3, separatorMode: 'newline', customSeparator: '', numbering: 'none', numberStart: 1, numberPad: 1, groupSize: 0, prefix: '', suffix: '', caseMode: 'asis' },
       setData: mockSetData,
       isDirty: false,
       lastSaved: 'just now',
@@ -54,22 +54,22 @@ vi.mock('@itsjust/core', () => ({
 
 vi.mock('@/tool', () => ({
   toolConfig: {
-    id: '1795194271',
-    name: 'Base Converter',
+    id: 'text-repeater',
+    name: 'Text Repeater & Multiplier',
     version: '1.0.0',
     features: { sidebar: true },
-    theme: { brand: 'Base Converter' },
+    theme: { brand: 'Text Repeater & Multiplier' },
   },
   templateBaseVersion: '1.1.0',
-  ToolCanvas: ({ state }: { state: { input: string } }) => <div>canvas:{state.input}</div>,
+  ToolCanvas: ({ state }: { state: { text: string } }) => <div>canvas:{state.text}</div>,
   ToolToolbar: () => <div>toolbar</div>,
   ToolSidebar: ({ text }: { text: string }) => <div>sidebar:{text}</div>,
 }));
 
 vi.mock('@/tool/tool-definition', () => ({
-  baseConverterTool: {
+  textRepeaterTool: {
     serialize: (state: unknown) => JSON.stringify(state),
-    deserialize: () => ({ success: true, data: { input: 'From Shared Url', inputBase: 10 } }),
+    deserialize: () => ({ success: true, data: { text: 'From Shared Url', count: 1 } }),
   },
 }));
 
