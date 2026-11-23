@@ -1,9 +1,4 @@
-import type { ToolConfig, ToolTheme } from '@itsjust/core';
-
-const toolTheme: ToolTheme = {
-  brand: 'Text Repeater & Multiplier',
-  accent: '#10b981',
-};
+import type { ToolConfig } from '@itsjust/core';
 
 export const toolConfig: ToolConfig = {
   id: 'text-repeater',
@@ -20,7 +15,13 @@ export const toolConfig: ToolConfig = {
     statusBar: true,
     darkMode: true,
   },
-  theme: toolTheme,
+  theme: {
+    accent: '#10b981',
+    accentHover: '#059669',
+    accentSubtle: 'rgba(16, 185, 129, 0.08)',
+    brand: 'Text Repeater & Multiplier',
+    icon: '\u{1F501}',
+  },
 };
 
 export default toolConfig;

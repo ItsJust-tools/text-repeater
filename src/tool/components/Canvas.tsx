@@ -79,10 +79,7 @@ export const Canvas: React.FC<CanvasProps> = ({ state, onChange }) => {
     'rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100';
 
   return (
-    <div
-      className="p-4 space-y-4 overflow-y-auto h-full"
-      data-testid="text-repeater-canvas"
-    >
+    <div className="p-4 space-y-4 overflow-y-auto h-full" data-testid="text-repeater-canvas">
       <div className="grid gap-2">
         <label
           htmlFor="repeat-text"
@@ -312,7 +309,11 @@ export const Canvas: React.FC<CanvasProps> = ({ state, onChange }) => {
       </div>
 
       {result.error ? (
-        <div role="alert" data-testid="repeat-error" className="text-xs text-red-600 dark:text-red-400">
+        <div
+          role="alert"
+          data-testid="repeat-error"
+          className="text-xs text-red-600 dark:text-red-400"
+        >
           {result.error}
         </div>
       ) : (

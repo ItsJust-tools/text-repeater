@@ -55,16 +55,8 @@ function applyCaseMode(text: string, caseMode: CaseMode): string {
  * Build one repetition string with its number, prefix and suffix applied.
  * Prefix/suffix wrap the (numbered) repetition body.
  */
-export function buildRepetition(
-  text: string,
-  index: number,
-  state: ToolState
-): string {
-  const numberLabel = formatNumber(
-    state.numberStart + index,
-    state.numbering,
-    state.numberPad
-  );
+export function buildRepetition(text: string, index: number, state: ToolState): string {
+  const numberLabel = formatNumber(state.numberStart + index, state.numbering, state.numberPad);
   const body = `${numberLabel}${text}`;
   return `${state.prefix}${body}${state.suffix}`;
 }
@@ -128,29 +120,26 @@ function deserializeState(data: unknown): DeserializeResult<ToolState> {
   if (typeof data !== 'object' || data === null) {
     return {
       success: false,
-      error:
-        'Invalid data format: expected { text: string, count: number, ... }',
+      error: 'Invalid data format: expected { text: string, count: number, ... }',
     };
   }
   const v = data as Partial<ToolState>;
   const textOk = typeof v.text === 'string';
   const countOk =
-    typeof v.count === 'number' && Number.isInteger(v.count) && v.count >= MIN_COUNT && v.count <= MAX_COUNT;
+    typeof v.count === 'number' &&
+    Number.isInteger(v.count) &&
+    v.count >= MIN_COUNT &&
+    v.count <= MAX_COUNT;
   if (!textOk || !countOk) {
     return {
       success: false,
-      error:
-        'Invalid data format: expected { text: string, count: number (0-10000), ... }',
+      error: 'Invalid data format: expected { text: string, count: number (0-10000), ... }',
     };
   }
-  const separatorMode: SeparatorMode = SEPARATOR_MODES.includes(
-    v.separatorMode as SeparatorMode
-  )
+  const separatorMode: SeparatorMode = SEPARATOR_MODES.includes(v.separatorMode as SeparatorMode)
     ? (v.separatorMode as SeparatorMode)
     : DEFAULT_STATE.separatorMode;
-  const numbering: NumberingStyle = NUMBERING_STYLES.includes(
-    v.numbering as NumberingStyle
-  )
+  const numbering: NumberingStyle = NUMBERING_STYLES.includes(v.numbering as NumberingStyle)
     ? (v.numbering as NumberingStyle)
     : DEFAULT_STATE.numbering;
   const caseMode: CaseMode = CASE_MODES.includes(v.caseMode as CaseMode)

@@ -51,8 +51,8 @@ export function Sidebar({ text, fontSize, onFontSizeChange }: ToolSidebarProps) 
       <div className="sidebar-section">
         <h3>How it works</h3>
         <p className="text-xs leading-relaxed">
-          Each repetition can be numbered, wrapped with a prefix/suffix, joined by a
-          separator, and grouped N per line. Output case can be forced to upper or lower.
+          Each repetition can be numbered, wrapped with a prefix/suffix, joined by a separator, and
+          grouped N per line. Output case can be forced to upper or lower.
         </p>
       </div>
     </div>

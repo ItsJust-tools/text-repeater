@@ -45,24 +45,39 @@ describe('separators and joining', () => {
   });
 
   it('uses a custom separator', () => {
-    const r = repeatText(state({ text: 'x', count: 3, separatorMode: 'custom', customSeparator: ' | ' }));
+    const r = repeatText(
+      state({ text: 'x', count: 3, separatorMode: 'custom', customSeparator: ' | ' })
+    );
     expect(r.output).toBe('x | x | x');
   });
 });
 
 describe('numbering', () => {
   it('formats numbering styles with start offset', () => {
-    const base: Partial<ToolState> = { text: 'row', count: 3, numbering: '1.', numberStart: 10, separatorMode: 'newline' };
+    const base: Partial<ToolState> = {
+      text: 'row',
+      count: 3,
+      numbering: '1.',
+      numberStart: 10,
+      separatorMode: 'newline',
+    };
     expect(repeatText(state(base)).output).toBe('10.row\n11.row\n12.row');
-    expect(
-      repeatText(state({ ...base, numbering: '[1]' as ToolState['numbering'] })).output
-    ).toBe('[10]row\n[11]row\n[12]row');
+    expect(repeatText(state({ ...base, numbering: '[1]' as ToolState['numbering'] })).output).toBe(
+      '[10]row\n[11]row\n[12]row'
+    );
   });
 
   it('zero-pads with numberPad', () => {
     expect(
       repeatText(
-        state({ text: 'x', count: 2, numbering: '01-', numberStart: 7, numberPad: 3, separatorMode: 'none' })
+        state({
+          text: 'x',
+          count: 2,
+          numbering: '01-',
+          numberStart: 7,
+          numberPad: 3,
+          separatorMode: 'none',
+        })
       ).output
     ).toBe('007-x008-x');
   });
@@ -79,21 +94,22 @@ describe('numbering', () => {
 
 describe('grouping, wrapping and case', () => {
   it('groups repetitions per line using separator inside groups', () => {
-    const r = repeatText(
-      state({ text: 'a', count: 5, separatorMode: 'comma', groupSize: 2 })
-    );
+    const r = repeatText(state({ text: 'a', count: 5, separatorMode: 'comma', groupSize: 2 }));
     expect(r.output).toBe('a,a\na,a\na');
     expect(r.lineCount).toBe(3);
   });
 
   it('applies prefix and suffix per repetition before joining', () => {
     expect(
-      repeatText(state({ text: 'hi', count: 2, prefix: '[', suffix: ']', separatorMode: 'space' })).output
+      repeatText(state({ text: 'hi', count: 2, prefix: '[', suffix: ']', separatorMode: 'space' }))
+        .output
     ).toBe('[hi] [hi]');
   });
 
   it('applies case mode after joining', () => {
-    expect(repeatText(state({ text: 'Ab', count: 2, caseMode: 'upper', separatorMode: 'none' })).output).toBe('ABAB');
+    expect(
+      repeatText(state({ text: 'Ab', count: 2, caseMode: 'upper', separatorMode: 'none' })).output
+    ).toBe('ABAB');
     expect(repeatText(state({ text: 'aB', count: 1, caseMode: 'lower' })).output).toBe('ab');
     expect(repeatText(state({ text: 'aB', count: 1, caseMode: 'asis' })).output).toBe('aB');
   });

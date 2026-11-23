@@ -38,7 +38,19 @@ vi.mock('@itsjust/core', () => ({
   ),
   useTool: () => ({
     state: {
-      data: { text: 'Hello', count: 3, separatorMode: 'newline', customSeparator: '', numbering: 'none', numberStart: 1, numberPad: 1, groupSize: 0, prefix: '', suffix: '', caseMode: 'asis' },
+      data: {
+        text: 'Hello',
+        count: 3,
+        separatorMode: 'newline',
+        customSeparator: '',
+        numbering: 'none',
+        numberStart: 1,
+        numberPad: 1,
+        groupSize: 0,
+        prefix: '',
+        suffix: '',
+        caseMode: 'asis',
+      },
       setData: mockSetData,
       isDirty: false,
       lastSaved: 'just now',

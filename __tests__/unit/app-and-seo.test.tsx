@@ -114,11 +114,32 @@ describe('app and seo', () => {
       error: 'Invalid data format: expected { text: string, count: number (0-10000), ... }',
     });
     expect(textRepeaterTool.serialize({ ...DEFAULT_STATE, text: 'xy' })).toContain('"text":"xy"');
-    expect(textRepeaterTool.deserialize({ text: 'xy', count: 2, caseMode: 'upper', numbering: '1.', groupSize: 2 })).toEqual({
+    expect(
+      textRepeaterTool.deserialize({
+        text: 'xy',
+        count: 2,
+        caseMode: 'upper',
+        numbering: '1.',
+        groupSize: 2,
+      })
+    ).toEqual({
       success: true,
-      data: { text: 'xy', count: 2, separatorMode: 'newline', customSeparator: '', numbering: '1.', numberStart: 1, numberPad: 1, groupSize: 2, prefix: '', suffix: '', caseMode: 'upper' },
+      data: {
+        text: 'xy',
+        count: 2,
+        separatorMode: 'newline',
+        customSeparator: '',
+        numbering: '1.',
+        numberStart: 1,
+        numberPad: 1,
+        groupSize: 2,
+        prefix: '',
+        suffix: '',
+        caseMode: 'upper',
+      },
     });
-    const exporters = (textRepeaterTool as { exporters?: Array<{ loader: ExporterLoader }> }).exporters ?? [];
+    const exporters =
+      (textRepeaterTool as { exporters?: Array<{ loader: ExporterLoader }> }).exporters ?? [];
     expect(exporters).toHaveLength(4);
     const first = exporters[0];
     expect(first).toBeDefined();
